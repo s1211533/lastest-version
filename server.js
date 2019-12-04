@@ -115,7 +115,7 @@ const read_n_print = (res,max,criteria={}) => {
 }
 
 
-app.get('/list',(req, res) => {
+/* app.get('/list',(req, res) => {
 	const client = new MongoClient(mongoDBurl);
 	client.connect(
 		(err) => {
@@ -148,7 +148,7 @@ app.get('/list',(req, res) => {
 			});
 		}
 	);
-});
+});*/
 
 app.get('/logout', (req,res) => {
 	req.session = null;
