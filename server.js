@@ -106,13 +106,13 @@ app.get('/list',(req, res) => {
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
 					res.write('<H2>Showing '+rn.length+' document(s)</H2>');
 					for(var i = 0; i < rn.length;i++){
-						//var cursor3 = db.collection('restaurants').find({_id:${rn[i]._id}}).address;
-						//var address = db.collection('restaurants').find({_id:rn[i]._id}).address.toArray(function(err,results){console.log(results)});
+						var cursor3 = db.collection('restaurants').find({_id:rn[i]._id}).address;
+						var address = db.collection('restaurants').find({_id:rn[i]._id}).address.toArray(function(err,results){console.log(results)});
 						res.write(`<li>restaurant: ${rn[i].name}</li>`);
 						res.write(` <ul><li>borough: ${rn[i].borough}</li>`);
 						res.write(`<li>cuisine: ${rn[i].cuisine}</li>`);
-						res.write(` <li>address: ${db.collection('restaurants').find({_id:rn[i]._id}).address}</li>`);
-				//res.write(` <li>address: ${address.toArray()[1]} ${address.toArray()[1]} ${address.toArray()[1]}</li>`);
+						//res.write(` <li>address: ${db.collection('restaurants').find({_id:rn[i]._id}).address}</li>`);
+				res.write(` <li>address: ${address[1]}</li>`);
 						res.write(` <li>Posted by: ${rn[i].owner}</li></ul>`);
 						res.write(`<a href="/editing" id="i"value= ${rn[i]._id}>edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
 						
