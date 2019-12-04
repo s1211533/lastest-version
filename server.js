@@ -106,16 +106,12 @@ app.get('/list',(req, res) => {
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
 					res.write('<H2>Showing '+rn.length+' document(s)</H2>');
 					for(var i = 0; i < rn.length;i++){
-						res.write(`<li>restaurant ${rn[i].name}</li>`);
-						res.write(` <ul><li>${rn[i].borough}</li></ul>`);
+						res.write(`restaurant<li> ${rn[i].name}</li>`);
+						res.write(` <ul><li>${rn[i].borough}</li>`);
 						res.write(`<li>${rn[i].cuisine}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
-						res.write(`<li>${rn[i].name}</li>`);
+						res.write(`address <li>${rn[i].building} ${rn[i].street} ${rn[i].zipcode}</li>`);
+						res.write(`Posted by <li>${rn[i].owner}</li>`);
+						res.write(`<li>${rn[i].name}</li></ul>`);
 					}
 					res.write('<br><a href="/create">Insert Restaurant</a></br>');
 					res.write('<br><a href="/logout">Logout</a></br>');
