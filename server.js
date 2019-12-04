@@ -13,8 +13,8 @@ const qs = require ('querystring');
 var timestamp = null;
 const fs = require('fs');
 
-const SECRETKEY1 = 'I want to pass COMPS381F';
-const SECRETKEY2 = 'Keep this to yourself';
+const SECRETKEY1 = 'all i want is pass';
+const SECRETKEY2 = 'help';
 
 app.set('view engine', 'ejs');
 
