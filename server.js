@@ -106,12 +106,12 @@ app.get('/list',(req, res) => {
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
 					res.write('<H2>Showing '+rn.length+' document(s)</H2>');
 					for(var i = 0; i < rn.length;i++){
-						let address = db.collection('restaurants').find({_id:rn._id})
+						var address = db.collection('restaurants').find({_id:${rn[i]._id}}).adress
 						
 						res.write(`<li>restaurant: ${rn[i].name}</li>`);
 						res.write(` <ul><li>borough: ${rn[i].borough}</li>`);
 						res.write(`<li>cuisine: ${rn[i].cuisine}</li>`);
-						res.write(` <li>address: ${rn[i].address.building} ${rn[i].address.street} ${rn[i].address.zipcode}</li>`);
+						res.write(` <li>address: ${address[1]} ${address[2]} $address[3]}</li>`);
 						res.write(` <li>Posted by: ${rn[i].owner}</li></ul>`);
 						res.write(`<a href="/create" id="i">edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
 						
