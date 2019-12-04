@@ -104,17 +104,17 @@ app.get('/list',(req, res) => {
 					res.writeHead(200, {"Content-Type": "text/html"});
 					res.write('<html><head><title>Restaurant</title></head>');
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
-					res.write('<H2>Showing '+rn.length+' document(s)</H2>');
+					res.write('<H2>Showing all'+rn.length+' document(s)</H2>');
 					for(var i = 0; i < rn.length;i++){
 						var cursor3 = db.collection('restaurants').find({_id:rn[i]._id}).address;
 						var address = JSON.stringify(cursor3); //db.collection('restaurants').find({_id:rn[i]._id}).address.toArray(function(err,results){console.log(results)});
 						res.write(`<li>restaurant: ${rn[i].name}</li>`);
 						res.write(` <ul><li>borough: ${rn[i].borough}</li>`);
 						res.write(`<li>cuisine: ${rn[i].cuisine}</li>`);
-						res.write(` <li>address: ${db.collection('restaurants').find({_id:rn[i]._id}).address}</li>`);
+						res.write(` <li>address:  ${rn[i].address.street}</li>`);
 				res.write(` <li>address: ${address}</li>`);
 						res.write(` <li>Posted by: ${rn[i].owner}</li></ul>`);
-						res.write(`<a href="/editing" id="i"value= ${rn[i]._id}>edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
+						res.write(`<br><a href="/editing" id="i"value= ${rn[i]._id}>edit(not working)+"i" </a><br>`);
 						
 					}
 					res.write('<br><a href="/create">Insert Restaurant</a></br>');
