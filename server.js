@@ -90,7 +90,7 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 
 
 
-app.get('/list',(req, res,max,criteria={}) => {
+app.get('/list',(req, res) => {
 	const read_n_print = (res,max,criteria={}) => {
 	const client = new MongoClient(mongoDBurl);
 	client.connect((err) => {
