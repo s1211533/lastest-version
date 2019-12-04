@@ -91,31 +91,38 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 
 
 app.get('/list',(req, res) => {
-	const read_n_print = (res,max,criteria={}) => {
 	const client = new MongoClient(mongoDBurl);
-	client.connect((err) => {
-		assert.equal(null,err);
-		console.log("Connected successfully to server!");
-
-		const db = client.db(dbName);
-		findRestaurants(db, max, criteria, (restaurants) => {
-			client.close();
-			console.log('Disconnected MongoDB');
-			res.writeHead(200, {"Content-Type": "text/html"});
-			res.write('<html><head><title>Restaurant</title></head>');
-			res.write('<body><H1>Restaurants</H1>');
-			res.write('<H2>Showing '+restaurants.length+' document(s)</H2>');
-			res.write('<ol>');
-			for (r of restaurants) {
-				//console.log(r._id);
-				res.write(`<li><a href='/showdetails?_id=${r._id}'>${r.name}</a></li>`)
+	client.connect(
+		(err) => {
+			assert.equal(null, err);
+			console.log("Connected successfully to server");
+			const db = client.db(dbName);
+			const findRestaurant = (db, callback, (restaurants)) => {
+				let cursor2 = db.collection('restaurants').find()
+				cursor2.toArray((err,rn) =>{
+					console.log(rn)
+					res.writeHead(200, {"Content-Type": "text/html"});
+					res.write('<html><head><title>Restaurant</title></head>');
+					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
+					for(var i = 0; i < rn.length;i++){
+						res.write(`<li><a href='/showdetails?_id=${rn[i].name}</a></li>`);
+					}
+					res.write('<br><a href="/create">Insert Restaurant</a></br>');
+					res.write('<br><a href="/logout">Logout</a></br>');
+					res.end('</body></html>');
+				});
+				callback();
 			}
-			res.write('</ol>');
-			res.write('<br><a href="/insert">Create New Restaurant</a>')
-			res.end('</body></html>');
-		});
-	});
-}
+			client.connect((err) => {
+				assert.equal(null,err);
+				console.log("Connected successfully to server");
+				const db = client.db(dbName);
+				findRestaurant(db,() => {
+					client.close();
+				});
+			});
+		}
+	);
 });
 
 app.get('/logout', (req,res) => {
