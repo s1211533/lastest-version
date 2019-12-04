@@ -66,11 +66,11 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 							res.redirect('/list');
 						} else {
 							res.status(200).render('fail');
-							console.log('Invalid!');
+							console.log('Invalid!'+result.password+result.name);
 						}
 					} else {
 						res.status(200).render('fail');
-						console.log('Invalid!');
+						console.log('Invalid! i am here');
 					}
 					
 					callback(); 
