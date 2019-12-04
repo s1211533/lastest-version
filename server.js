@@ -88,6 +88,31 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 	);
 });
 
+const read_n_print = (res,max,criteria={}) => {
+	const client = new MongoClient(mongoDBurl);
+	client.connect((err) => {
+		assert.equal(null,err);
+		console.log("Connected successfully to server!");
+
+		const db = client.db(dbName);
+		findRestaurants(db, max, criteria, (restaurants) => {
+			client.close();
+			console.log('Disconnected MongoDB');
+			res.writeHead(200, {"Content-Type": "text/html"});
+			res.write('<html><head><title>Restaurant</title></head>');
+			res.write('<body><H1>Restaurants</H1>');
+			res.write('<H2>Showing '+restaurants.length+' document(s)</H2>');
+			res.write('<ol>');
+			for (r of restaurants) {
+				//console.log(r._id);
+				res.write(`<li><a href='/showdetails?_id=${r._id}'>${r.name}</a></li>`)
+			}
+			res.write('</ol>');
+			res.write('<br><a href="/insert">Create New Restaurant</a>')
+			res.end('</body></html>');
+		});
+	});
+}
 
 
 app.get('/list',(req, res) => {
