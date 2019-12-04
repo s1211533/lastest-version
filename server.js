@@ -142,7 +142,7 @@ app.get('/list',(req, res) => {
 if (parsedURL.pathname == '/editing') {
 	editing(res,parsedURL.query._id)
 }
-const showdetails = (res,_id) => {
+const editing = (res,_id) => {
 	const client = new MongoClient(mongoDBurl);
 	client.connect((err) => {
 		assert.equal(null,err);
