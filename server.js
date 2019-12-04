@@ -154,61 +154,59 @@ app.get('/register', (req,res) => {
 	res.status(200).render('register');
 });
 //photo
-app.post('/create', function(req, res){
+app.post('/create', function(req, res, next){
     const form = new formidable.IncomingForm();
-	let client = new MongoClient(mongoDBurl);
-    client.connect((err) =>	{
-		form.parse(req, (err, fields, files) => {
-			// console.log(JSON.stringify(files));
-			const filename = files.filetoupload.path;
-		   
-			let mimetype = "images/jpeg";
-		   
-			if (files.filetoupload.type) {
-				mimetype = files.filetoupload.type;
-			}
-			
-			
-			const db2 = client.db(dbName);
-		
-			const new_r = [];
-			
-			fs.readFile(files.filetoupload.path, (err,data) => {    
-				new_r['mimetype'] = mimetype;
-				new_r['image'] = new Buffer.from(data).toString('base64');
-			});
-			
-			var _coord = { latitude: fields.latitude , longitude: fields.longitude};
-			var doc = { restaurant_id: fields.r_id ,
-						name: fields.restname , 
-					   borough: fields.Borough,
-					   cuisine: fields.Cuisine,
-					   photo: new_r['image'],
-					   mimetype: new_r['mimetype'],
-					   address: { street: fields.street,
-						   building: fields.building,
-						   zipcode: fields.zipcode,
-						   street: fields.street,
-						   coord: _coord,
-					   },
-					   grades: { user: req.body.user, score: req.body.score },
-					   owner: req.session.username,
-			}; 
-			console.log(doc);
-			db2.collection("restaurants").insertOne(doc, function(err, res) {
-				if (err) throw err;
-					console.log("Document inserted");      
-				client.close();
-			});
-			
-		});
-		res.writeHead(200, {'Content-Type': 'text/html'});
-		res.write('Create Restaurant was successful');
-		res.write('<form action="/">');
-		res.write('<input type="submit" value="Go Back"/>');
-		res.write('</form>');
-		res.end();
-	});
+    form.parse(req, (err, fields, files) => {
+        console.log('2');
+        // console.log(JSON.stringify(files));
+            const filename = files.filetoupload.path;
+           
+            let mimetype = "images/jpeg";
+           
+            if (files.filetoupload.type) {
+                mimetype = files.filetoupload.type;
+            }
+           fs.readFile(files.filetoupload.path, (err,data) => {    
+                    let MongoClient = new MongoClient(mongourl);
+                    MongoClient.connect(url, function (err, db) {
+                    const db2 = db.db(dbname);
+                    
+                    new_r['mimetype'] = mimetype;
+                    new_r['image'] = new Buffer.from(data).toString('base64');
+
+                    var _coord = { latitude: fields.latitude , longitude: fields.longitude};
+                    var doc = { restaurant_id: fields.r_id ,
+                                name: fields.name , 
+                               borough: fields.borough,
+                               cuisine: fields.cuisine,
+                               photo: new_r['image'],
+                               mimetype: new_r['mimetype'],
+                               address: { street: fields.street,
+                                   building: fields.building,
+                                   zipcode: fields.zipcode,
+                                   street: fields.street,
+                                   coord: _coord,
+                               },
+                               grades: { user: req.body.user, score: req.body.score },
+                               owner: req.session.username,
+                    }; 
+                    console.log(doc);
+                    db2.collection("restaurants").insertOne(doc, function(err, res) {
+                        if (err) throw err;
+                            console.log("Document inserted");      
+                                db.close();
+                             }); 
+                               })
+        });
+
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write('Create Restaurant was successful');
+            res.write('<form action="/index">');
+            res.write('<input type="submit" value="Go Back"/>');
+            res.write('</form>');
+            res.end();
+
+    });
 });
 app.get('/create', (req,res) => {
 	res.status(200).render('create');
