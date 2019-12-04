@@ -94,7 +94,7 @@ app.get('/list',(req, res) => {
 					res.write('<html><head><title>Restaurant</title></head>');
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
 					for(var i = 0; i < rn.length;i++){
-						res.write(`<li>${rn[i].name}+${rn[i].id}</li>`);
+						res.write(`<li>${rn[i].name}+${rn[i]._id}</li>`);
 					}
 					res.write('<br><a href="/create">Insert Restaurant</a></br>');
 					res.write('<br><a href="/logout">Logout</a></br>');
