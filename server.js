@@ -13,8 +13,8 @@ const qs = require ('querystring');
 var timestamp = null;
 const fs = require('fs');
 
-const SECRETKEY1 = 'all i want is pass';
-const SECRETKEY2 = 'help';
+const SECRETKEY1 = 'I want to pass COMPS381F';
+const SECRETKEY2 = 'Keep this to yourself';
 
 app.set('view engine', 'ejs');
 
@@ -56,7 +56,7 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 			assert.equal(null, err);
 			console.log("Connected successfully to server");
 			const db = client.db(dbName);
-			const findUser = (db, callback) => { 
+			const findUser = (db, callback) => {
 				let cursor = db.collection('user').findOne({ name: req.body.name });
 				cursor.then((result) => {
 					if (result) {
@@ -66,21 +66,21 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 							res.redirect('/list');
 						} else {
 							res.status(200).render('fail');
-							console.log('Invalid!'+result.name);
+							console.log('Invalid!');
 						}
 					} else {
 						res.status(200).render('fail');
-						console.log('Invalid! i ama here');
+						console.log('Invalid!');
 					}
-					
-					callback(); 
+
+					callback();
 				});
 			}
-			client.connect((err) => { 
-				assert.equal(null,err); 
+			client.connect((err) => {
+				assert.equal(null,err);
 				console.log("Connected successfully to server");
 				const db = client.db(dbName);
-				findUser(db,() => { 
+				findUser(db,() => {
 					client.close();
 				});
 			});
@@ -132,7 +132,7 @@ app.get('/logout', (req,res) => {
 
 
 app.post('/register', (req,res) => {
-	
+
 	const client = new MongoClient(mongoDBurl);
 	client.connect(
 		(err) => {
@@ -145,20 +145,20 @@ app.post('/register', (req,res) => {
 					obj = {};
 					obj['name']=req.body.name;
 					obj['password']=req.body.password;
-					db.collection('user').insertOne(obj,(err,result) => { 
-						res.redirect('/login');					
+					db.collection('user').insertOne(obj,(err,result) => {
+						res.redirect('/login');
 					});
 					}else {
 						res.status(200).render('fail_reg');
 						console.log('Invalid!');}
 
-				callback(); 
+				callback();
 			}
-			client.connect((err) => { 
-				assert.equal(null,err); 
+			client.connect((err) => {
+				assert.equal(null,err);
 				console.log("Connected successfully to server");
 				const db = client.db(dbName);
-				regUser(db,() => { 
+				regUser(db,() => {
 					client.close();
 				});
 			});
@@ -180,26 +180,26 @@ app.post('/create', function(req, res){
 		form.parse(req, (err, fields, files) => {
 			// console.log(JSON.stringify(files));
 			const filename = files.filetoupload.path;
-		   
+
 			let mimetype = "images/jpeg";
-		   
+
 			if (files.filetoupload.type) {
 				mimetype = files.filetoupload.type;
 			}
-			
-			
+
+
 			const db2 = client.db(dbName);
-		
+
 			const new_r = [];
-			
-			fs.readFile(files.filetoupload.path, (err,data) => {    
+
+			fs.readFile(files.filetoupload.path, (err,data) => {
 				new_r['mimetype'] = mimetype;
 				new_r['image'] = new Buffer.from(data).toString('base64');
 			});
-			
+
 			var _coord = { latitude: fields.latitude , longitude: fields.longitude};
 			var doc = { restaurant_id: fields.r_id ,
-						name: fields.restname , 
+						name: fields.restname ,
 					   borough: fields.Borough,
 					   cuisine: fields.Cuisine,
 					   photo: new_r['image'],
@@ -212,14 +212,14 @@ app.post('/create', function(req, res){
 					   },
 					   grades: { user: req.body.user, score: req.body.score },
 					   owner: req.session.username,
-			}; 
+			};
 			console.log(doc);
 			db2.collection("restaurants").insertOne(doc, function(err, res) {
 				if (err) throw err;
-					console.log("Document inserted");      
+					console.log("Document inserted");
 				client.close();
 			});
-			
+
 		});
 
 		res.writeHead(200, {'Content-Type': 'text/html'});
@@ -236,38 +236,38 @@ app.get('/create', (req,res) => {
 });
 
 app.post('/score', (req,res) => {
-	
+
 	const client = new MongoClient(mongoDBurl);
 	client.connect(
 		(err) => {
 			assert.equal(null, err);
 			console.log("Connected successfully to server");
 			const db = client.db(dbName);
-			const score = (db, callback) => { 
+			const score = (db, callback) => {
 				let cursor = db.collection('restaurants').find({"name":req.session.restname});
-				cursor.forEach((rest) => { 
-					
+				cursor.forEach((rest) => {
+
 					if (rest.grades.user == req.session.username) {
 						res.status(200).render('Exist user score');
 						console.log('Invalid! Exist user score');
 					}
 					else{
-						
-						
-						
-						db.collection('restaurants').update({_id:ObjectId(_id)},{"grades.score":req.body.score},(err,result) => { 
-							res.redirect('/login');					
-						});				
+
+
+
+						db.collection('restaurants').update({_id:ObjectId(_id)},{"grades.score":req.body.score},(err,result) => {
+							res.redirect('/login');
+						});
 
 					}
-				}); 
-				callback(); 
+				});
+				callback();
 			}
-			client.connect((err) => { 
-				assert.equal(null,err); 
+			client.connect((err) => {
+				assert.equal(null,err);
 				console.log("Connected successfully to server");
 				const db = client.db(dbName);
-				score(db,() => { 
+				score(db,() => {
 					client.close();
 				});
 			});
