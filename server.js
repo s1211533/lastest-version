@@ -2,8 +2,8 @@ const url  = require('url');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const ObjectId = require('mongodb').ObjectID;
-const mongoDBurl = 'mongodb+srv://g1211533:g1211533@cluster0-rjree.mongodb.net/test?retryWrites=true&w=majority';
-const dbName = 'project';
+const mongoDBurl = 'mongodb+srv://aaron:aaronso@aarondb-ep2mi.mongodb.net/test?retryWrites=true&w=majority';
+const dbName = 's381assignment';
 const session = require('cookie-session');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -187,7 +187,7 @@ app.post('/create', function(req, res){
 	let client = new MongoClient(mongoDBurl);
     client.connect((err) =>	{
 		form.parse(req, (err, fields, files) => {
-			// console.log(JSON.stringify(files));
+			
 			const filename = files.filetoupload.path;
 		   
 			let mimetype = "images/jpeg";
