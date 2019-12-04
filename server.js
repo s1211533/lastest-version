@@ -104,8 +104,10 @@ app.get('/list',(req, res) => {
 					res.writeHead(200, {"Content-Type": "text/html"});
 					res.write('<html><head><title>Restaurant</title></head>');
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
+					res.write('<H2>Showing '+rn.length+' document(s)</H2>');
 					for(var i = 0; i < rn.length;i++){
 						res.write(`<li>${rn[i].name}</li>`);
+						res.write(` <ul><li>${rn[i].name}</li></ul>`);
 					}
 					res.write('<br><a href="/create">Insert Restaurant</a></br>');
 					res.write('<br><a href="/logout">Logout</a></br>');
