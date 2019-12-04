@@ -113,7 +113,7 @@ app.get('/list',(req, res) => {
 						res.write(`<li>cuisine: ${rn[i].cuisine}</li>`);
 					//	res.write(` <li>address: ${address.toArray()[1]} ${address.toArray()[1]} ${address.toArray()[1]}</li>`);
 						res.write(` <li>Posted by: ${rn[i].owner}</li></ul>`);
-						res.write(`<a href="/editing" id="i"value= ${rn[i]._id}>edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
+						//res.write(`<a href="/editing" id="i"value= ${rn[i]._id}>edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
 						
 					}
 					res.write('<br><a href="/create">Insert Restaurant</a></br>');
