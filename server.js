@@ -13,8 +13,6 @@ const qs = require ('querystring');
 var timestamp = null;
 const fs = require('fs');
 
-let parsedURL = url.parse(req.url,true);
-
 const SECRETKEY1 = 'I want to pass COMPS381F';
 const SECRETKEY2 = 'Keep this to yourself';
 
@@ -115,7 +113,7 @@ app.get('/list',(req, res) => {
 						res.write(`<li>cuisine: ${rn[i].cuisine}</li>`);
 					//	res.write(` <li>address: ${address.toArray()[1]} ${address.toArray()[1]} ${address.toArray()[1]}</li>`);
 						res.write(` <li>Posted by: ${rn[i].owner}</li></ul>`);
-						res.write(`<a href='/editing?_id=${rn[i]._id}'>edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
+						res.write(`<a href="/editing" id="i"value= ${rn[i]._id}>edit+"i" </a><input type="text" value= ${rn[i]._id}>`);
 						
 					}
 					res.write('<br><a href="/create">Insert Restaurant</a></br>');
@@ -136,46 +134,6 @@ app.get('/list',(req, res) => {
 	);
 });
 
-
-
-
-if (parsedURL.pathname == '/editing') {
-	editing(res,parsedURL.query._id)
-}
-const editing = (res,_id) => {
-	const client = new MongoClient(mongoDBurl);
-	client.connect((err) => {
-		assert.equal(null,err);
-		console.log("Connected successfully to server");
-
-		const db = client.db(dbName);
-
-		cursor = db.collection('restaurants').find({_id: ObjectId(_id)});
-		cursor.toArray((err,docs) => {
-			assert.equal(err,null);
-			client.close();
-			console.log('Disconnected MongoDB');
-			res.writeHead(200, {"Content-Type": "text/html"});
-			res.write(`<html><head><title>${docs[0].name}</title></head>`);
-			res.write('<h3>')
-			res.write(`<p>Name: ${docs[0].name}</p>`);
-			res.write(`<p>Location: ${docs[0].borough}</p>`);
-			res.write(`<p>Cuisine: ${docs[0].cuisine}</p>`);
-			res.write('</h3>')
-			res.write(`<br><a href="/edit?_id=${_id}&name=${docs[0].name}&borough=${docs[0].borough}&cuisine=${docs[0].cuisine}">Edit</a>`)
-			res.write('<br>')
-			res.write('<br><a href="/read?max=20">Home</a>')
-			res.end('</body></html>');
-		});
-	});
-}
-
-
-
-
-
-
-	
 app.get('/logout', (req,res) => {
 	req.session = null;
 	res.redirect('/');
