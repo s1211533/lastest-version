@@ -106,8 +106,8 @@ app.get('/list',(req, res) => {
 					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
 					res.write('<H2>Showing '+rn.length+' document(s)</H2>');
 					for(var i = 0; i < rn.length;i++){
-					//	var cursor3 = db.collection('restaurants').find({_id:${rn[i]._id}}).address;
-					//	var address = cursor3.toArray(function(err,results){console.log(results)});
+						var cursor3 = db.collection('restaurants').find({_id:${rn[i]._id}}).address;
+						var address = cursor3.toArray(function(err,results){console.log(results)});
 						res.write(`<li>restaurant: ${rn[i].name}</li>`);
 						res.write(` <ul><li>borough: ${rn[i].borough}</li>`);
 						res.write(`<li>cuisine: ${rn[i].cuisine}</li>`);
