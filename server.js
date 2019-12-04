@@ -88,14 +88,17 @@ app.post('/login', setCurrentTimestamp, (req, res) => {
 	);
 });
 
-const read_n_print = (res,max,criteria={}) => {
-	const client = new MongoClient(mongoDBurl);
-	client.connect((err) => {
-		assert.equal(null,err);
-		console.log("Connected successfully to server!");
 
-		const db = client.db(dbName);
-		findRestaurants(db, max, criteria, (restaurants) => {
+
+
+ app.get('/list',(req, res,max,criteria={}) => {
+	const client = new MongoClient(mongoDBurl);
+	client.connect(
+		(err) => {
+			assert.equal(null, err);
+			console.log("Connected successfully to server");
+			const db = client.db(dbName);
+					findRestaurants(db, max, criteria, (restaurants) => {
 			client.close();
 			console.log('Disconnected MongoDB');
 			res.writeHead(200, {"Content-Type": "text/html"});
@@ -111,33 +114,6 @@ const read_n_print = (res,max,criteria={}) => {
 			res.write('<br><a href="/insert">Create New Restaurant</a>')
 			res.end('</body></html>');
 		});
-	});
-}
-
-
-/* app.get('/list',(req, res) => {
-	const client = new MongoClient(mongoDBurl);
-	client.connect(
-		(err) => {
-			assert.equal(null, err);
-			console.log("Connected successfully to server");
-			const db = client.db(dbName);
-			const findRestaurant = (db, callback) => { 
-				let cursor2 = db.collection('restaurants').find()
-				cursor2.toArray((err,rn) =>{
-					console.log(rn)
-					res.writeHead(200, {"Content-Type": "text/html"});
-					res.write('<html><head><title>Restaurant</title></head>');
-					res.write(`<H1>Hello, `+req.session.username+`</H1>`);
-					for(var i = 0; i < rn.length;i++){
-						res.write(`<li>${rn[i].name}</li>`);
-					}
-					res.write('<br><a href="/create">Insert Restaurant</a></br>');
-					res.write('<br><a href="/logout">Logout</a></br>');
-					res.end('</body></html>');
-				});
-				callback();
-			}
 			client.connect((err) => { 
 				assert.equal(null,err); 
 				console.log("Connected successfully to server");
@@ -148,7 +124,7 @@ const read_n_print = (res,max,criteria={}) => {
 			});
 		}
 	);
-});*/
+});
 
 app.get('/logout', (req,res) => {
 	req.session = null;
