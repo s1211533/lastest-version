@@ -2,8 +2,8 @@ const url  = require('url');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const ObjectId = require('mongodb').ObjectID;
-const mongoDBurl = 'mongodb+srv://aaron:aaronso@aarondb-ep2mi.mongodb.net/test?retryWrites=true&w=majority';
-const dbName = 's381assignment';
+const mongoDBurl = 'mongodb+srv://g1211533:g1211533@cluster0-rjree.mongodb.net/test?retryWrites=true&w=majority';
+const dbName = 'project';
 const session = require('cookie-session');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,8 +13,8 @@ const qs = require ('querystring');
 var timestamp = null;
 const fs = require('fs');
 
-const SECRETKEY1 = 'I want to pass COMPS381F';
-const SECRETKEY2 = 'Keep this to yourself';
+const SECRETKEY1 = 'I dont wanna do anymore';
+const SECRETKEY2 = 'Keep doing';
 
 app.set('view engine', 'ejs');
 
@@ -181,13 +181,12 @@ app.get('/register', (req,res) => {
 });
 
 
-//photo
 app.post('/create', function(req, res){
     const form = new formidable.IncomingForm();
 	let client = new MongoClient(mongoDBurl);
     client.connect((err) =>	{
 		form.parse(req, (err, fields, files) => {
-			
+			// console.log(JSON.stringify(files));
 			const filename = files.filetoupload.path;
 		   
 			let mimetype = "images/jpeg";
